@@ -8,6 +8,7 @@
             <input type="text" class="form-control" id="name" autocomplete="off" placeholder="Enter Course Name Here" v-model="name">
           </div>
           <div class="form-group">
+
             <label for="LessonId">Lesson Name</label>
             <select class="form-control" v-model="LessonId">
               <option disabled>--- Choose Lesson Name ---</option>
@@ -35,6 +36,7 @@
 <script>
 export default {
   name: 'AddCoursePage',
+
   data () {
     return {
       name: '',
@@ -47,6 +49,7 @@ export default {
       return this.$store.state.lessons
     }
   },
+
   methods: {
     addCourse () {
       const { name, LessonId, materialUrl } = this
@@ -72,6 +75,7 @@ export default {
       next({ name: 'LoginPage' })
     }
   },
+
 }
 </script>
 

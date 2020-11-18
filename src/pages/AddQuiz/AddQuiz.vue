@@ -2,6 +2,7 @@
   <div class="d-flex justify-content-center align-items-center container" style="height: 50vh;">
     <section id="addPage" class="row align-items-center">
       <div class="col-5">
+
         <form @submit.prevent="addQuiz" v-if="!isAddQuizDone">
           <div class="form-group">
             <label for="name">Quiz Name</label>
@@ -31,6 +32,7 @@
           </div>
           <div class="form-group">
             <label for="name">Choices</label>
+
             <input type="text" class="form-control" id="choices" autocomplete="off" placeholder="Enter Choices Here" v-model="choices">
           </div>
           <div class="form-group">
@@ -57,6 +59,19 @@
 
 <script>
 export default {
+  data () {
+    return{
+      isAddQuizDone: false,
+      name: '',
+      CourseId: '',
+      LessonId: '',
+      QuizId: '',
+      question: '',
+      choices: '',
+      answer: '',
+      totalQuestion: ''
+    }
+  },
   name: 'AddQuizPage',
   data () {
     return {
@@ -82,6 +97,7 @@ export default {
       return this.$store.state.quizCourseId
     }
   },
+
   watch: {
     LessonId: function() {
       const { LessonId } = this
@@ -96,6 +112,7 @@ export default {
       this.QuizId = found.id
     }
   },
+
   methods: {
     addQuiz () {
       const { name, CourseId } = this
@@ -145,6 +162,7 @@ export default {
       next({ name: 'LoginPage' })
     }
   },
+
 }
 </script>
 

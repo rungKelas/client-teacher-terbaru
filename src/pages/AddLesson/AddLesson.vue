@@ -32,7 +32,6 @@ export default {
   methods: {
     addLesson () {
       const { name } = this
-
       this.$store.dispatch('addLesson', name)
         .then(() => {
           this.$router.push({ name: 'LessonPage' })

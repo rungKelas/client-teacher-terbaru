@@ -15,10 +15,12 @@ export default new Vuex.Store({
     students: [],
     lessons: [],
     courses: [],
+
     quizzes: [],
     selectedLessons: [],
     quizCourseId: [],
     questions: []
+
   },
   mutations: {
     setTeacher (state, payload) {
@@ -33,6 +35,7 @@ export default new Vuex.Store({
     setCourses (state, payload) {
       state.courses = payload
     },
+
     setQuizzes (state, payload) {
       state.quizzes = payload
     },
@@ -71,7 +74,6 @@ export default new Vuex.Store({
     },
     fetchLessons (context) {
       const TeacherId = localStorage.getItem('teacherId')
-
       axios({
         method: 'GET',
         url: `http://localhost:3000/lessons/${TeacherId}`
@@ -97,7 +99,6 @@ export default new Vuex.Store({
     },
     fetchStudents (context) {
       const TeacherId = localStorage.getItem('teacherId')
-
       axios({
         method: 'GET',
         url: `http://localhost:3000/teacher/student-list/${TeacherId}`
@@ -151,11 +152,13 @@ export default new Vuex.Store({
       return axios({
         method: 'POST',
         url: `http://localhost:3000/teacher/quiz/${CourseId}`,
+
         data: {
           name
         }
       })
     },
+
     getQuiz (context, payload) {
       axios({
         method: 'GET',
@@ -165,6 +168,7 @@ export default new Vuex.Store({
         context.commit('setQuizCourseId', data)
       })
       .catch(err => {
+
         throw err
       })
     },
@@ -192,6 +196,7 @@ export default new Vuex.Store({
         .catch(err => {
           throw err.response
         })
+
     }
   }
 });

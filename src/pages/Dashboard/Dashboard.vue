@@ -59,7 +59,7 @@ export default {
   },
   created () {
     let token = localStorage.getItem('access_token')
-    let decoded = jwt.verify(token, 'secret')
+    let decoded = jwt.verify(token, 'mswingsfour')
     this.teacherId = decoded.id
     localStorage.setItem('teacherId', decoded.id)
     localStorage.setItem('teacherName', decoded.name)
