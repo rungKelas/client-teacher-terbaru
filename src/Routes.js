@@ -18,7 +18,8 @@ import Dashboard from '@/pages/Dashboard/Dashboard';
 
 // Quiz
 import QuizPage from '@/pages/Quiz/Quiz';
-import AddQuizPage from '@/pages/AddQuiz/AddQuiz'
+import AddQuizPage from '@/pages/AddQuiz/AddQuiz';
+import QuizDetail from '@/pages/QuizDetail/QuizDetail';
 
 Vue.use(Router);
 
@@ -78,6 +79,11 @@ export default new Router({
           path: 'add-quiz',
           name: 'AddQuizPage',
           component: AddQuizPage,
+        },
+        {
+          path: 'quiz-detail',
+          name: 'QuizDetail',
+          component: QuizDetail,
         }
       ],
     }

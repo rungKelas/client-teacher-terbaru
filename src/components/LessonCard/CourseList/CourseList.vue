@@ -1,5 +1,9 @@
 <template>
-  <h5 class="card-title">{{ course.name }}</h5>
+  <div class="card-body">
+    <li class="name">
+      {{ course.name }}
+    </li>
+  </div>
 </template>
 
 <script>
@@ -10,5 +14,7 @@ export default {
 </script>
 
 <style>
-
+.card-body {
+  text-align: left;
+}
 </style>

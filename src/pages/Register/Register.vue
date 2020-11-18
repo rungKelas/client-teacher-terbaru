@@ -13,24 +13,24 @@
         <p class="widget-auth-info">
             Use your email to sign up.
         </p>
-        <form class="mt" @submit.prevent="login">
+        <form class="mt" @submit.prevent="register">
           <b-alert class="alert-sm" variant="danger" :show="!!errorMessage">
             {{errorMessage}}
           </b-alert>
           <div class="form-group">
-            <input class="form-control no-border" ref="name" required type="text" name="name" placeholder="Name" />
+            <input class="form-control no-border" v-model="name" required type="text" name="name" placeholder="Name" />
           </div>
           <div class="form-group">
-            <input class="form-control no-border" ref="address" required type="text" name="address" placeholder="Address" />
+            <input class="form-control no-border" v-model="address" required type="text" name="address" placeholder="Address" />
           </div>
           <div class="form-group">
-            <input class="form-control no-border" ref="birthdate" required type="date" name="birthdate" placeholder="Birthdate" />
+            <input class="form-control no-border" v-model="birthdate" required type="date" name="birthdate" placeholder="Birthdate" />
           </div>
           <div class="form-group">
-            <input class="form-control no-border" ref="email" required type="email" name="email" placeholder="Email" />
+            <input class="form-control no-border" v-model="email" required type="email" name="email" placeholder="Email" />
           </div>
           <div class="form-group">
-            <input class="form-control no-border" ref="password" required type="password" name="password" placeholder="Password" />
+            <input class="form-control no-border" v-model="password" required type="password" name="password" placeholder="Password" />
           </div>
           <b-button type="submit" size="sm" class="auth-btn mb-3" variant="inverse">Register</b-button>
         </form>
@@ -55,22 +55,30 @@ export default {
   data() {
     return {
       errorMessage: null,
+      name: '',
+      address: '',
+      birthdate: '',
+      email: '',
+      password: ''
     };
   },
   methods: {
-    login() {
-      const email = this.$refs.email.value;
-      const password = this.$refs.password.value;
-
-      if (email.length !== 0 && password.length !== 0) {
-        window.localStorage.setItem('authenticated', true);
-        this.$router.push('/app/dashboard');
+    register () {
+      const { name, address, birthdate, email, password } = this
+      const payload = {
+        name,
+        address,
+        birthdate,
+        email,
+        password
       }
-    },
-  },
-  created() {
-    if (window.localStorage.getItem('authenticated') === 'true') {
-      this.$router.push('/app/main/analytics');
+      this.$store.dispatch('register', payload)
+        .then(() => {
+          this.$router.push({ name: 'LoginPage' })
+        })
+        .catch(err => {
+          throw err.response
+        })
     }
   },
 };

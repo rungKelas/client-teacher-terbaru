@@ -15,9 +15,12 @@ export default new Vuex.Store({
     students: [],
     lessons: [],
     courses: [],
-    quizzes: [], //maybe is all of quiz the teacher have
+
+    quizzes: [],
     selectedLessons: [],
-    quizCourseId: [] //all quiz based on CourseId
+    quizCourseId: [],
+    questions: []
+
   },
   mutations: {
     setTeacher (state, payload) {
@@ -32,8 +35,15 @@ export default new Vuex.Store({
     setCourses (state, payload) {
       state.courses = payload
     },
+
+    setQuizzes (state, payload) {
+      state.quizzes = payload
+    },
     setQuizCourseId (state, payload) {
       state.quizCourseId = payload
+    },
+    setSelectedQuiz (state, payload) {
+      state.questions = payload
     }
   },
   actions: {
@@ -43,6 +53,20 @@ export default new Vuex.Store({
         method: 'POST',
         url: 'http://localhost:3000/teacher/login',
         data: {
+          email,
+          password
+        }
+      })
+    },
+    register (context, payload) {
+      const { name, address, birthdate, email, password } = payload
+      return axios({
+        method: 'POST',
+        url: 'http://localhost:3000/teacher/register',
+        data: {
+          name,
+          address,
+          birthdate,
           email,
           password
         }
@@ -82,60 +106,97 @@ export default new Vuex.Store({
         .then(({ data }) => {
           context.commit('setStudents', data)
         })
+        .catch(err => {
+          throw err.response
+        })
+    },
+    fetchCourses (context) {
+      axios({
+        method: 'GET',
+        url: `http://localhost:3000/teacher/course`
+      })
+        .then(({ data }) => {
+          context.commit('setCourses', data)
+        })
+        .catch(err => {
+          throw err.response
+        })
     },
     addCourse (context, payload) {
-      const { name, materialUrl, LessonId } = payload
+      const { name, LessonId, materialUrl } = payload
+
       return axios({
-        url: 'http://localhost:3000/teacher/course/'+LessonId,
-        method: 'post',
+        method: 'POST',
+        url: `http://localhost:3000/teacher/course/${LessonId}`,
         data: {
-          name, materialUrl
+          name,
+          materialUrl
         }
       })
     },
-    fetchCourses(context, payload){
+    fetchQuizzes (context) {
       axios({
-        url: 'http://localhost:3000/courses/'+ payload,
-        method: 'get'
+        method: 'GET',
+        url: `http://localhost:3000/teacher/quiz/`
       })
-      .then(({ data }) => {
-        context.commit('setCourses', data)
-      })
-      .catch(err => {
-        console.log(err)
-      })
+        .then(({ data }) => {
+          context.commit('setQuizzes', data)
+        })
+        .catch(err => {
+          throw err.response
+        })
     },
-    addQuiz(context, payload){
+    addQuiz (context, payload) {
       const { name, CourseId } = payload
+
       return axios({
-        url: 'http://localhost:3000/teacher/quiz/' + CourseId,
-        method: 'post',
+        method: 'POST',
+        url: `http://localhost:3000/teacher/quiz/${CourseId}`,
+
         data: {
           name
         }
       })
     },
-    getQuiz(context, payload) {
+
+    getQuiz (context, payload) {
       axios({
-        url: 'http://localhost:3000/quiz/' + payload,
-        method: 'get'
+        method: 'GET',
+        url: `http://localhost:3000/quiz/${payload}`
       })
       .then(({ data }) => {
         context.commit('setQuizCourseId', data)
       })
       .catch(err => {
-        console.log(err)
+
+        throw err
       })
     },
-    addQuestion(context, payload) {
+    addQuestion (context, payload) {
       const { QuizId, answer, question, choices } = payload
+
       return axios({
-        url: 'http://localhost:3000/teacher/question/' + QuizId,
-        method: 'post',
+        method: 'POST',
+        url: `http://localhost:3000/teacher/question/${QuizId}`,
         data: {
-          answer, question, choices
+          question,
+          answer,
+          choices
         }
       })
+    },
+    fetchQuestionByQuizId (context, id) {
+      axios({
+        method: 'GET',
+        url: `http://localhost:3000/questions/${id}`
+      })
+        .then(({ data }) => {
+          context.commit('setSelectedQuiz', data)
+        })
+        .catch(err => {
+          throw err.response
+        })
+
     }
   }
 });

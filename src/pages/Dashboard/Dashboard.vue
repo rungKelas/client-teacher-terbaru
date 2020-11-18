@@ -3,7 +3,7 @@
     <b-row>
         <b-col xs="12">
           <Widget
-            title="<h5>Student <span class='fw-semi-bold'>List</span></h5>"
+            title="<h5>Student <span class='fw-semi-bold'>Lists</span></h5>"
             bodyClass="widget-table-overflow"
             customHeader
           >
@@ -31,7 +31,6 @@
 <script>
 import Widget from '@/components/Widget/Widget';
 import StudentTable from '@/components/StudentTable/StudentTable';
-import mock from './mock';
 import jwt from 'jsonwebtoken';
 
 import { Chart } from 'highcharts-vue';
@@ -48,7 +47,6 @@ export default {
   },
   data () {
     return {
-      mock,
       teacherId: ''
     };
   },
@@ -64,6 +62,7 @@ export default {
     let decoded = jwt.verify(token, 'mswingsfour')
     this.teacherId = decoded.id
     localStorage.setItem('teacherId', decoded.id)
+    localStorage.setItem('teacherName', decoded.name)
     this.$store.dispatch('fetchStudents')
   }
 };

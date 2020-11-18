@@ -4,21 +4,22 @@
       <div class="col-5">
         <form @submit.prevent="addCourse">
           <div class="form-group">
-            <label for="name">Name</label>
+            <label for="name">Course Name</label>
             <input type="text" class="form-control" id="name" autocomplete="off" placeholder="Enter Course Name Here" v-model="name">
           </div>
           <div class="form-group">
-            <label for="name">Link Url</label>
-            <input type="text" class="form-control" id="name" autocomplete="off" placeholder="Enter Link Material" v-model="materialUrl">
-          </div>
-          <div class="form-group">
-            <label for="name">Lessons  </label>
-            <select v-model="LessonId">
-              <option disabled value="">Please select one</option>
-              <option v-for="lesson in lessons" :key="lesson.id" v-bind:value="lesson.id"> {{lesson.name}} </option>
+
+            <label for="LessonId">Lesson Name</label>
+            <select class="form-control" v-model="LessonId">
+              <option disabled>--- Choose Lesson Name ---</option>
+              <option v-for="lesson in lessons" :key="lesson.id" v-bind:value="lesson.id">{{ lesson.name }}</option>
             </select>
           </div>
-          <button type="submit" class="btn btn-block btn-info">Add Course</button>
+          <div class="form-group">
+            <label for="name">Material URL</label>
+            <input type="text" class="form-control" id="name" autocomplete="off" placeholder="Enter Material URL Here" v-model="materialUrl">
+          </div>
+          <button type="submit" class="btn btn-block btn-primary">Add Course</button>
         </form>
       </div>
       <div class="col-4">
@@ -35,11 +36,12 @@
 <script>
 export default {
   name: 'AddCoursePage',
-  data(){
+
+  data () {
     return {
       name: '',
-      materialUrl: '',
-      LessonId: ''
+      LessonId: '',
+      materialUrl: ''
     }
   },
   computed: {
@@ -47,21 +49,32 @@ export default {
       return this.$store.state.lessons
     }
   },
-   created () {
-    this.$store.dispatch('fetchLessons')
-  },
+
   methods: {
-    addCourse() {
-      const { name, materialUrl, LessonId } = this
-      this.$store.dispatch('addCourse', { name, materialUrl, LessonId })
-      .then(({ data }) => {
-        this.$router.push({ name: 'CoursePage' })
-      })
-      .catch(err => {
-        console.log(err)
-      })
+    addCourse () {
+      const { name, LessonId, materialUrl } = this
+
+      const payload = {
+        name,
+        LessonId,
+        materialUrl
+      }
+      this.$store.dispatch('addCourse', payload)
+        .then(() => {
+          this.$router.push({ name: 'CoursePage' })
+        })
+        .catch(err => {
+          throw err.response
+        })
     }
-  }
+  },
+  beforeRouteEnter (to, from, next) {
+    if (localStorage.access_token) {
+      next()
+    } else {
+      next({ name: 'LoginPage' })
+    }
+  },
 
 }
 </script>
