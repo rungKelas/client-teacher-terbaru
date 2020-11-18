@@ -18,7 +18,8 @@
                 <tr>
                   <th class="hidden-sm-down">#</th>
                   <th>Nama Quiz</th>
-                  <th>Mata Pelajaran</th>
+                  <th>Materi</th>
+                  <th>Lihat Quiz</th>
                 </tr>
               </thead>
               <tbody>

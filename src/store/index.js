@@ -16,7 +16,9 @@ export default new Vuex.Store({
     lessons: [],
     courses: [],
     quizzes: [],
-    selectedLessons: []
+    selectedLessons: [],
+    quizCourseId: [],
+    questions: []
   },
   mutations: {
     setTeacher (state, payload) {
@@ -33,6 +35,12 @@ export default new Vuex.Store({
     },
     setQuizzes (state, payload) {
       state.quizzes = payload
+    },
+    setQuizCourseId (state, payload) {
+      state.quizCourseId = payload
+    },
+    setSelectedQuiz (state, payload) {
+      state.questions = payload
     }
   },
   actions: {
@@ -137,5 +145,53 @@ export default new Vuex.Store({
           throw err.response
         })
     },
+    addQuiz (context, payload) {
+      const { name, CourseId } = payload
+
+      return axios({
+        method: 'POST',
+        url: `http://localhost:3000/teacher/quiz/${CourseId}`,
+        data: {
+          name
+        }
+      })
+    },
+    getQuiz (context, payload) {
+      axios({
+        method: 'GET',
+        url: `http://localhost:3000/quiz/${payload}`
+      })
+      .then(({ data }) => {
+        context.commit('setQuizCourseId', data)
+      })
+      .catch(err => {
+        throw err
+      })
+    },
+    addQuestion (context, payload) {
+      const { QuizId, answer, question, choices } = payload
+
+      return axios({
+        method: 'POST',
+        url: `http://localhost:3000/teacher/question/${QuizId}`,
+        data: {
+          question,
+          answer,
+          choices
+        }
+      })
+    },
+    fetchQuestionByQuizId (context, id) {
+      axios({
+        method: 'GET',
+        url: `http://localhost:3000/questions/${id}`
+      })
+        .then(({ data }) => {
+          context.commit('setSelectedQuiz', data)
+        })
+        .catch(err => {
+          throw err.response
+        })
+    }
   }
 });

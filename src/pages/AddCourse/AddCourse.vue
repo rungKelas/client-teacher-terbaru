@@ -10,8 +10,8 @@
           <div class="form-group">
             <label for="LessonId">Lesson Name</label>
             <select class="form-control" v-model="LessonId">
-              <option disabled selected>--- Choose Lesson Name ---</option>
-              <LessonOption v-for="lesson in lessons" :key="lesson.id" :lesson="lesson" />
+              <option disabled>--- Choose Lesson Name ---</option>
+              <option v-for="lesson in lessons" :key="lesson.id" v-bind:value="lesson.id">{{ lesson.name }}</option>
             </select>
           </div>
           <div class="form-group">
@@ -33,10 +33,8 @@
 </template>
 
 <script>
-import LessonOption from '../../components/LessonOption/LessonOption'
 export default {
   name: 'AddCoursePage',
-  components: { LessonOption },
   data () {
     return {
       name: '',

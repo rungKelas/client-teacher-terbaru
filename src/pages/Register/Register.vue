@@ -73,7 +73,7 @@ export default {
         password
       }
       this.$store.dispatch('register', payload)
-        .then(response => {
+        .then(() => {
           this.$router.push({ name: 'LoginPage' })
         })
         .catch(err => {

@@ -31,7 +31,6 @@
 <script>
 import Widget from '@/components/Widget/Widget';
 import StudentTable from '@/components/StudentTable/StudentTable';
-import mock from './mock';
 import jwt from 'jsonwebtoken';
 
 import { Chart } from 'highcharts-vue';
