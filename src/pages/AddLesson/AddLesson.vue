@@ -7,7 +7,7 @@
             <label for="name">Name</label>
             <input type="text" class="form-control" id="name" autocomplete="off" placeholder="Enter Lesson Name Here" v-model="name">
           </div>
-          <button type="submit" class="btn btn-block btn-info">Add Lesson</button>
+          <button type="submit" class="btn btn-block btn-primary">Add Lesson</button>
         </form>
       </div>
       <div class="col-4">
@@ -41,7 +41,14 @@ export default {
           throw err.response
         })
     }
-  }
+  },
+  beforeRouteEnter (to, from, next) {
+    if (localStorage.access_token) {
+      next()
+    } else {
+      next({ name: 'LoginPage' })
+    }
+  },
 }
 </script>
 

@@ -3,7 +3,7 @@
     <b-row>
         <b-col xs="12">
           <Widget
-            title="<h5>Student <span class='fw-semi-bold'>List</span></h5>"
+            title="<h5>Student <span class='fw-semi-bold'>Lists</span></h5>"
             bodyClass="widget-table-overflow"
             customHeader
           >
@@ -64,6 +64,7 @@ export default {
     let decoded = jwt.verify(token, 'secret')
     this.teacherId = decoded.id
     localStorage.setItem('teacherId', decoded.id)
+    localStorage.setItem('teacherName', decoded.name)
     this.$store.dispatch('fetchStudents')
   }
 };

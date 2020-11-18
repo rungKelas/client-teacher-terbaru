@@ -2,20 +2,12 @@
   <div class="d-flex justify-content-center align-items-center container" style="height: 50vh;">
     <section id="addPage" class="row align-items-center">
       <div class="col-5">
-        <form @submit.prevent="addProduct">
+        <form @submit.prevent="addQuiz">
           <div class="form-group">
-            <label for="name">Question</label>
+            <label for="name">Quiz Name</label>
             <input type="text" class="form-control" id="name" autocomplete="off" placeholder="Enter Quiz Name Here" v-model="name">
           </div>
-          <div class="form-group">
-            <label for="name">Choices</label>
-            <input type="text" class="form-control" id="name" autocomplete="off" placeholder="Enter Quiz Name Here" v-model="name">
-          </div>
-          <div class="form-group">
-            <label for="name">Answer</label>
-            <input type="text" class="form-control" id="name" autocomplete="off" placeholder="Enter Quiz Name Here" v-model="name">
-          </div>
-          <button type="submit" class="btn btn-block btn-info">Add Quiz</button>
+          <button type="submit" class="btn btn-block btn-primary">Add Quiz</button>
         </form>
       </div>
       <div class="col-4">
@@ -32,6 +24,36 @@
 <script>
 export default {
   name: 'AddQuizPage',
+  data () {
+    return {
+      name: ''
+    }
+  },
+  computed: {
+    courses () {
+      return this.$store.state.courses
+    }
+  },
+  methods: {
+    addQuiz () {
+      const { name } = this
+
+      this.$store.dispatch('addQuiz', name)
+        .then(() => {
+          this.$router.push({ name: 'QuizPage' })
+        })
+        .catch(err => {
+          throw err.response
+        })
+    }
+  },
+  beforeRouteEnter (to, from, next) {
+    if (localStorage.access_token) {
+      next()
+    } else {
+      next({ name: 'LoginPage' })
+    }
+  },
 }
 </script>
 

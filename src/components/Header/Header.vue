@@ -9,16 +9,6 @@
           <i class="la la-bars la-lg" />
         </a>
       </b-nav-item>
-      <b-nav-item class="d-md-down-none">
-        <a href="#" class="px-2">
-          <i class="la la-refresh la-lg" />
-        </a>
-      </b-nav-item>
-      <b-nav-item class="d-md-down-none">
-        <a href="#" class="px-2">
-          <i class="la la-times la-lg" />
-        </a>
-      </b-nav-item>
     </b-nav>
     <b-nav>
       <b-form class="d-sm-down-none ml-5" inline>
@@ -45,11 +35,11 @@
         menu-class="notificationsWrapper py-0 animate__animated animate__animated-fast animate__fadeIn"
         right>
         <template slot="button-content">
-          <span class="avatar rounded-circle thumb-sm float-left mr-2">
+          <span class="avatar rounded-circle thumb-sm float-left mr-3">
             <img class="rounded-circle" src="../../assets/people/a5.jpg" alt="..." />
           </span>
-          <span class="small">Egy Fazri</span>
-          <span class="ml-1 mr-3 circle bg-primary text-white fw-bold">13</span>
+          <span class="small"> {{ this.name }} </span>
+          <span class="ml-3 mr-3 circle bg-primary text-white fw-bold">13</span>
         </template>
         <Notifications />
       </b-nav-item-dropdown>
@@ -74,6 +64,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
+import jwt from 'jsonwebtoken';
 import Notifications from '@/components/Notifications/Notifications';
 
 export default {
@@ -81,6 +72,11 @@ export default {
   components: { Notifications },
   computed: {
     ...mapState('layout', ['sidebarClose', 'sidebarStatic']),
+  },
+  data () {
+    return {
+      name: ''
+    }
   },
   methods: {
     ...mapActions('layout', ['toggleSidebar', 'switchSidebar', 'changeSidebarActive']),
@@ -110,6 +106,11 @@ export default {
       localStorage.clear()
       this.$router.push({ name: 'LoginPage' })
     },
+  },
+  created () {
+    let token = localStorage.getItem('access_token')
+    let decoded = jwt.verify(token, 'secret')
+    this.name = decoded.name
   }
 };
 </script>

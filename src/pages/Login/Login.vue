@@ -66,11 +66,6 @@ export default {
           throw(err.response)
         })
     },
-  },
-  created() {
-    if (window.localStorage.getItem('authenticated') === 'true') {
-      this.$router.push('/app/main/analytics');
-    }
-  },
+  }
 };
 </script>

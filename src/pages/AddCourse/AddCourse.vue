@@ -2,12 +2,23 @@
   <div class="d-flex justify-content-center align-items-center container" style="height: 50vh;">
     <section id="addPage" class="row align-items-center">
       <div class="col-5">
-        <form @submit.prevent="addProduct">
+        <form @submit.prevent="addCourse">
           <div class="form-group">
-            <label for="name">Name</label>
+            <label for="name">Course Name</label>
             <input type="text" class="form-control" id="name" autocomplete="off" placeholder="Enter Course Name Here" v-model="name">
           </div>
-          <button type="submit" class="btn btn-block btn-info">Add Course</button>
+          <div class="form-group">
+            <label for="LessonId">Lesson Name</label>
+            <select class="form-control" v-model="LessonId">
+              <option disabled selected>--- Choose Lesson Name ---</option>
+              <LessonOption v-for="lesson in lessons" :key="lesson.id" :lesson="lesson" />
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="name">Material URL</label>
+            <input type="text" class="form-control" id="name" autocomplete="off" placeholder="Enter Material URL Here" v-model="materialUrl">
+          </div>
+          <button type="submit" class="btn btn-block btn-primary">Add Course</button>
         </form>
       </div>
       <div class="col-4">
@@ -22,8 +33,47 @@
 </template>
 
 <script>
+import LessonOption from '../../components/LessonOption/LessonOption'
 export default {
   name: 'AddCoursePage',
+  components: { LessonOption },
+  data () {
+    return {
+      name: '',
+      LessonId: '',
+      materialUrl: ''
+    }
+  },
+  computed: {
+    lessons () {
+      return this.$store.state.lessons
+    }
+  },
+  methods: {
+    addCourse () {
+      const { name, LessonId, materialUrl } = this
+
+      const payload = {
+        name,
+        LessonId,
+        materialUrl
+      }
+      this.$store.dispatch('addCourse', payload)
+        .then(() => {
+          this.$router.push({ name: 'CoursePage' })
+        })
+        .catch(err => {
+          throw err.response
+        })
+    }
+  },
+  beforeRouteEnter (to, from, next) {
+    if (localStorage.access_token) {
+      next()
+    } else {
+      next({ name: 'LoginPage' })
+    }
+  },
 }
 </script>
 

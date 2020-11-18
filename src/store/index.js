@@ -27,6 +27,12 @@ export default new Vuex.Store({
     },
     setStudents (state, payload) {
       state.students = payload
+    },
+    setCourses (state, payload) {
+      state.courses = payload
+    },
+    setQuizzes (state, payload) {
+      state.quizzes = payload
     }
   },
   actions: {
@@ -36,6 +42,20 @@ export default new Vuex.Store({
         method: 'POST',
         url: 'http://localhost:3000/teacher/login',
         data: {
+          email,
+          password
+        }
+      })
+    },
+    register (context, payload) {
+      const { name, address, birthdate, email, password } = payload
+      return axios({
+        method: 'POST',
+        url: 'http://localhost:3000/teacher/register',
+        data: {
+          name,
+          address,
+          birthdate,
           email,
           password
         }
@@ -77,6 +97,45 @@ export default new Vuex.Store({
         .then(({ data }) => {
           context.commit('setStudents', data)
         })
-    }
+        .catch(err => {
+          throw err.response
+        })
+    },
+    fetchCourses (context) {
+      axios({
+        method: 'GET',
+        url: `http://localhost:3000/teacher/course`
+      })
+        .then(({ data }) => {
+          context.commit('setCourses', data)
+        })
+        .catch(err => {
+          throw err.response
+        })
+    },
+    addCourse (context, payload) {
+      const { name, LessonId, materialUrl } = payload
+
+      return axios({
+        method: 'POST',
+        url: `http://localhost:3000/teacher/course/${LessonId}`,
+        data: {
+          name,
+          materialUrl
+        }
+      })
+    },
+    fetchQuizzes (context) {
+      axios({
+        method: 'GET',
+        url: `http://localhost:3000/teacher/quiz/`
+      })
+        .then(({ data }) => {
+          context.commit('setQuizzes', data)
+        })
+        .catch(err => {
+          throw err.response
+        })
+    },
   }
 });

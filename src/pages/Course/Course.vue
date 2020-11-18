@@ -7,7 +7,7 @@
     <b-row>
       <b-col>
         <Widget
-          title="<h5>Table <span class='fw-semi-bold'>Styles</span></h5>"
+          title="<h5>Table <span class='fw-semi-bold'>Courses</span></h5>"
           customHeader settings close
         >
           <div class="table-resposive">
@@ -18,56 +18,13 @@
                   <th>Materi</th>
                   <th>Mata Pelajaran</th>
                   <th class="hidden-sm-down">Link Materi</th>
+                  <th class="hidden-sm-down">Quiz</th>
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="row in tableStyles" :key="row.id">
-                  <td>{{row.id}}</td>
-                  <td>
-                    <img class="img-rounded" :src="row.picture" alt="" height="50" />
-                  </td>
-                  <td>
-                    {{row.description}}
-                    <div v-if="row.label">
-                      <b-badge :variant="row.label.colorClass">{{row.label.text}}</b-badge>
-                    </div>
-                  </td>
-                  <td>
-                    <p class="mb-0">
-                      <small>
-                        <span class="fw-semi-bold">Type:</span>
-                        <span class="text-muted">&nbsp; {{row.info.type}}</span>
-                      </small>
-                    </p>
-                    <p>
-                      <small>
-                        <span class="fw-semi-bold">Dimensions:</span>
-                        <span class="text-muted">&nbsp; {{row.info.dimensions}}</span>
-                      </small>
-                    </p>
-                  </td>
-                  <td class="width-150">
-                    <b-progress
-                      :variant="row.progress.colorClass" :value="row.progress.percent" :max="100"
-                      class="progress-sm mb-xs"
-                    />
-                  </td>
-                </tr>
+                <CourseRow v-for="(course, index) in courses" :key="course.id" :course="course" :index="index" />
               </tbody>
             </table>
-          </div>
-          <div class="clearfix">
-            <div class="float-right">
-              <b-button variant="default" class="mr-3" size="sm">Send to...</b-button>
-              <b-dropdown variant="inverse" class="mr-xs" size="sm" text="Clear" right>
-                <b-dropdown-item>Clear</b-dropdown-item>
-                <b-dropdown-item>Move ...</b-dropdown-item>
-                <b-dropdown-item>Something else here</b-dropdown-item>
-                <b-dropdown-divider />
-                <b-dropdown-item>Separated link</b-dropdown-item>
-              </b-dropdown>
-            </div>
-            <p>Basic table with styled content</p>
           </div>
         </Widget>
       </b-col>
@@ -77,95 +34,29 @@
 
 <script>
 import Widget from '@/components/Widget/Widget';
+import CourseRow from '@/components/CourseRow/CourseRow';
 
 export default {
   name: 'CoursePage',
-  components: { Widget },
-  data() {
-    return {
-      tableStyles: [
-        {
-          id: 1,
-          picture: require('../../assets/tables/1.jpg'), // eslint-disable-line global-require
-          description: 'Palo Alto',
-          info: {
-            type: 'JPEG',
-            dimensions: '200x150',
-          },
-          progress: {
-            percent: 29,
-            colorClass: 'success',
-          },
-        },
-        {
-          id: 2,
-          picture: require('../../assets/tables/2.jpg'), // eslint-disable-line global-require
-          description: 'The Sky',
-          info: {
-            type: 'PSD',
-            dimensions: '2400x1455',
-          },
-          progress: {
-            percent: 33,
-            colorClass: 'warning',
-          },
-        },
-        {
-          id: 3,
-          picture: require('../../assets/tables/3.jpg'), // eslint-disable-line global-require
-          description: 'Down the road',
-          label: {
-            colorClass: 'danger',
-            text: 'INFO!',
-          },
-          info: {
-            type: 'JPEG',
-            dimensions: '200x150',
-          },
-          progress: {
-            percent: 38,
-            colorClass: 'inverse',
-          },
-        },
-        {
-          id: 4,
-          picture: require('../../assets/tables/4.jpg'), // eslint-disable-line global-require
-          description: 'The Edge',
-          info: {
-            type: 'PNG',
-            dimensions: '210x160',
-          },
-          progress: {
-            percent: 17,
-            colorClass: 'danger',
-          },
-        },
-        {
-          id: 5,
-          picture: require('../../assets/tables/5.jpg'), // eslint-disable-line global-require
-          description: 'Fortress',
-          info: {
-            type: 'JPEG',
-            dimensions: '1452x1320',
-          },
-          progress: {
-            percent: 41,
-            colorClass: 'primary',
-          },
-        },
-      ],
-      checkboxes1: [false, false, false, false],
-      checkboxes2: [false, false, false, false, false, false],
-      checkboxes3: [false, false, false, false, false, false],
-    };
+  components: { Widget, CourseRow },
+  computed: {
+    courses () {
+      return this.$store.state.courses
+    }
   },
   methods: {
-    parseDate(date) {
-      const dateSet = date.toDateString().split(' ');
-      return `${date.toLocaleString('en-us', { month: 'long' })} ${dateSet[2]}, ${dateSet[3]}`;
-    },
     changePage () {
       this.$router.push({ name: 'AddCoursePage' })
+    }
+  },
+  created () {
+    this.$store.dispatch('fetchCourses')
+  },
+  beforeRouteEnter (to, from, next) {
+    if (localStorage.access_token) {
+      next()
+    } else {
+      next({ name: 'LoginPage' })
     }
   },
 };
