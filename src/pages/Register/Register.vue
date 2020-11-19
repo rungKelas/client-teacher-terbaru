@@ -1,5 +1,5 @@
 <template>
-  <div class="auth-page">
+  <div class="register-page">
     <b-container>
       <h5 class="auth-logo">
         <i class="fa fa-circle text-primary"></i>
@@ -83,3 +83,11 @@ export default {
   },
 };
 </script>
+<style>
+.register-page {
+  background-image: url('../../assets/background_1.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+</style>
