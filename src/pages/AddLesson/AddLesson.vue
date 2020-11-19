@@ -5,7 +5,15 @@
         <form @submit.prevent="addLesson">
           <div class="form-group">
             <label for="name">Name</label>
-            <input type="text" class="form-control" id="name" autocomplete="off" placeholder="Enter Lesson Name Here" v-model="name">
+            <select class="form-control" v-model="name">
+              <option disabled selected>--- Choose Lesson Name ---</option>
+              <option value="Matematika">Matematika</option>
+              <option value="Bahasa Indonesia">Bahasa Indonesia</option>
+              <option value="Bahasa Inggris">Bahasa Inggris</option>
+              <option value="IPA">IPA</option>
+              <option value="PPKN">PPKN</option>
+              <option value="IPS">IPS</option>
+            </select>
           </div>
           <button type="submit" class="btn btn-block btn-primary">Add Lesson</button>
         </form>

@@ -69,3 +69,11 @@ export default {
   }
 };
 </script>
+<style>
+.auth-page {
+  background-image: url('../../assets/background_1.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+</style>
